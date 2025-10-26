@@ -1,145 +1,160 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
-  <meta charset="UTF-8">
-  <title>Comedor Automático de Gallinas</title>
-  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
-  <style>
-    /* ===== Estilos generales ===== */
-    body {
-      font-family: 'Segoe UI', sans-serif;
-      /*background: linear-gradient(135deg, #FFEB3B, #FFC107);*/
-      background: linear-gradient(120deg, #0072ff, #00c6ff);
-      margin: 0;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-    }
+    <meta charset="UTF-8">
+    <title>Comedor Automático de Gallinas</title>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+    <style>
+        /* ===== Estilos generales ===== */
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            /*background: linear-gradient(135deg, #FFEB3B, #FFC107);*/
+            background: linear-gradient(120deg, #0072ff, #00c6ff);
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
 
-    .card {
-      background: rgba(255,255,255,0.9);
-      border-radius: 20px;
-      padding: 40px;
-      max-width: 400px;
-      width: 90%;
-      text-align: center;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.3);
-      animation: fadeIn 1s ease-in-out;
-    }
+        .card {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 800px;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+            animation: fadeIn 1s ease-in-out;
+        }
 
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(-20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
 
-    h1 {
-      margin-bottom: 20px;
-      color: #6B4C00;
-    }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
 
-    button {
-      font-size: 22px;
-      padding: 20px 50px;
-      border: none;
-      border-radius: 40px;
-      cursor: pointer;
-      background: #4CAF50;
-      color: white;
-      font-weight: bold;
-      transition: 0.3s;
-      margin-top: 20px;
-    }
+        h1 {
+            margin-bottom: 20px;
+            color: #6B4C00;
+        }
 
-    button:hover {
-      transform: scale(1.1);
-      background: #45A049;
-    }
+        button {
+            font-size: 28px;
+            /* Texto más grande */
+            padding: 25px 60px;
+            /* Más espacio alrededor */
+            border: none;
+            border-radius: 50px;
+            /* Borde más redondeado */
+            cursor: pointer;
+            background: #4CAF50;
+            color: white;
+            font-weight: bold;
+            transition: 0.3s;
+            margin-top: 20px;
+        }
 
-    #estado {
-      font-size: 20px;
-      margin-top: 20px;
-      padding: 10px;
-      border-radius: 15px;
-      background: #FFF3E0;
-      color: #BF360C;
-      font-weight: bold;
-    }
+        button:hover {
+            transform: scale(1.1);
+            background: #45A049;
+        }
 
-    #contador {
-      margin-top: 15px;
-      font-size: 20px;
-      color: #3E2723;
-      font-weight: bold;
-    }
-  </style>
+
+        #estado {
+            font-size: 20px;
+            margin-top: 20px;
+            padding: 10px;
+            border-radius: 15px;
+            background: #FFF3E0;
+            color: #BF360C;
+            font-weight: bold;
+        }
+
+        #contador {
+            margin-top: 15px;
+            font-size: 50px;
+            /* Antes estaba 20px, ahora más grande */
+            color: #3E2723;
+            font-weight: bold;
+        }
+    </style>
 </head>
+
 <body>
-  <div class="card">
-    <h1>Comedor Automático para Gallinas 🐔</h1>
-    <button id="btnEncender">Encender Motor</button>
-    <div id="estado">Estado actual: <b>Desconocido</b></div>
-    <div id="contador"></div>
-  </div>
+    <div class="card">
+        <h1>COMEDOR AUTOMATICO PARA GALLINAS PONEDORAS</h1>
+        <button id="btnEncender">🐔ALIMENTAR GALLINAS 🐔</button>
+        <div id="estado">Estado actual: <b>Desconocido</b></div>
+        <div id="contador"></div>
+    </div>
 
-  <script>
-    // === Configuración Firebase ===
-    const firebaseConfig = {
-      apiKey: "AIzaSyDvdJ-Sob2ZoQrQD8PIG0WE8i8Q9pBa89Y",
-      authDomain: "mortorpaso.firebaseapp.com",
-      databaseURL: "https://mortorpaso-default-rtdb.firebaseio.com",
-      projectId: "mortorpaso",
-      storageBucket: "mortorpaso.firebasestorage.app",
-      messagingSenderId: "520882205185",
-      appId: "1:520882205185:web:1b87fe3ef08c92f595c600"
-    };
-    firebase.initializeApp(firebaseConfig);
-    const db = firebase.database();
-    const refMotor = db.ref("/MotorPasoFireBase/estado");
+    <script>
+        // === Configuración Firebase ===
+        const firebaseConfig = {
+            apiKey: "AIzaSyDvdJ-Sob2ZoQrQD8PIG0WE8i8Q9pBa89Y",
+            authDomain: "mortorpaso.firebaseapp.com",
+            databaseURL: "https://mortorpaso-default-rtdb.firebaseio.com",
+            projectId: "mortorpaso",
+            storageBucket: "mortorpaso.firebasestorage.app",
+            messagingSenderId: "520882205185",
+            appId: "1:520882205185:web:1b87fe3ef08c92f595c600"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
+        const refMotor = db.ref("/MotorPasoFireBase/estado");
 
-    const boton = document.getElementById("btnEncender");
-    const estado = document.getElementById("estado");
-    const contador = document.getElementById("contador");
+        const boton = document.getElementById("btnEncender");
+        const estado = document.getElementById("estado");
+        const contador = document.getElementById("contador");
 
-    let tiempoMotor = 10; // 10 segundos de funcionamiento
+        let tiempoMotor = 10; // 10 segundos de funcionamiento
 
-    // ===== Cambiar estado desde el botón =====
-    boton.addEventListener("click", () => {
-      refMotor.set("1"); // Solo encender, se apagará automáticamente
-    });
+        // ===== Cambiar estado desde el botón =====
+        boton.addEventListener("click", () => {
+            refMotor.set("1"); // Solo encender, se apagará automáticamente
+        });
 
-    // ===== Escuchar cambios en Firebase en tiempo real =====
-    refMotor.on("value", (snapshot) => {
-      const valor = snapshot.val();
-      if (valor === "1") {
-        estado.innerHTML = "Estado actual: <b>Encendido</b>";
-        boton.style.background = "#FF5722";
-        boton.style.color = "#fff";
-        boton.innerText = "Motor Encendido";
+        // ===== Escuchar cambios en Firebase en tiempo real =====
+        refMotor.on("value", (snapshot) => {
+            const valor = snapshot.val();
+            if (valor === "1") {
+                estado.innerHTML = "Estado actual: <b>Encendido</b>";
+                boton.style.background = "#FF5722";
+                boton.style.color = "#fff";
+                boton.innerText = "ALIMENTANDO GALLINAS 🐔 🐔 🐔";
 
-        // Iniciar cuenta regresiva
-        let tiempoRestante = tiempoMotor;
-        contador.innerText = `Apagando en ${tiempoRestante}s`;
+                // Iniciar cuenta regresiva
+                let tiempoRestante = tiempoMotor;
+                contador.innerText = `Apagando en ${tiempoRestante} `;
 
-        const intervalo = setInterval(() => {
-          tiempoRestante--;
-          if (tiempoRestante >= 0) {
-            contador.innerText = `Apagando en ${tiempoRestante}s`;
-          } else {
-            clearInterval(intervalo);
-            contador.innerText = "";
-          }
-        }, 1000);
+                const intervalo = setInterval(() => {
+                    tiempoRestante--;
+                    if (tiempoRestante >= 0) {
+                        contador.innerText = `Apagando en ${tiempoRestante} `;
+                    } else {
+                        clearInterval(intervalo);
+                        contador.innerText = "";
+                    }
+                }, 1000);
 
-      } else {
-        estado.innerHTML = "Estado actual: <b>Apagado</b>";
-        boton.style.background = "#4CAF50";
-        boton.style.color = "#fff";
-        boton.innerText = "Encender Motor";
-        contador.innerText = "";
-      }
-    });
-  </script>
+            } else {
+                estado.innerHTML = "Estado actual: <b>Apagado</b>";
+                boton.style.background = "#4CAF50";
+                boton.style.color = "#fff";
+                boton.innerText = "ALIMENTAR GALLINAS";
+                contador.innerText = "";
+            }
+        });
+    </script>
 </body>
+
 </html>
