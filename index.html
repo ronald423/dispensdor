@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Control Motor Paso a Paso</title>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      text-align: center;
+      background: linear-gradient(120deg, #0072ff, #00c6ff);
+      color: white;
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    h1 { margin-bottom: 10px; }
+    button {
+      font-size: 20px;
+      padding: 15px 40px;
+      border: none;
+      border-radius: 30px;
+      cursor: pointer;
+      background: #fff;
+      color: #0072ff;
+      font-weight: bold;
+      transition: 0.3s;
+    }
+    button:hover {
+      transform: scale(1.05);
+      background: #f1f1f1;
+    }
+    #estado {
+      font-size: 22px;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Control del Motor Paso a Paso</h1>
+  <button id="btnEncender">Encender Motor</button>
+  <div id="estado">Estado actual: <b>Desconocido</b></div>
+
+  <script>
+    // === CONFIGURA TU FIREBASE ===
+    const firebaseConfig = {
+      apiKey: "AIzaSyDvdJ-Sob2ZoQrQD8PIG0WE8i8Q9pBa89Y",
+      authDomain: "mortorpaso.firebaseapp.com",
+      databaseURL: "https://mortorpaso-default-rtdb.firebaseio.com",
+      projectId: "mortorpaso",
+      storageBucket: "mortorpaso.firebasestorage.app",
+      messagingSenderId: "520882205185",
+      appId: "1:520882205185:web:1b87fe3ef08c92f595c600"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+    const refMotor = db.ref("/MotorPasoFireBase/estado");
+
+    const boton = document.getElementById("btnEncender");
+    const estado = document.getElementById("estado");
+
+    // === Cambiar estado desde el botón ===
+    boton.addEventListener("click", () => {
+      refMotor.once("value").then(snapshot => {
+        const valor = snapshot.val();
+        const nuevoEstado = valor === 1 ? 0 : 1;
+        refMotor.set(nuevoEstado);
+      });
+    });
+
+    // === Escuchar cambios en tiempo real ===
+    refMotor.on("value", (snapshot) => {
+      const valor = snapshot.val();
+      if (valor === 1) {
+        boton.innerText = "Apagar Motor";
+        boton.style.background = "#ff4b5c";
+        boton.style.color = "#fff";
+        estado.innerHTML = "Estado actual: <b>Encendido</b>";
+      } else {
+        boton.innerText = "Encender Motor";
+        boton.style.background = "#fff";
+        boton.style.color = "#0072ff";
+        estado.innerHTML = "Estado actual: <b>Apagado</b>";
+      }
+    });
+  </script>
+</body>
+</html>
